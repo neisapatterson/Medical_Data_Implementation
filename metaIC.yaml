@@ -1,0 +1,24 @@
+
+"":
+  PUMS:
+    PUMS:
+      row_privacy: True
+      rows: 1000
+      INCIDENT_ID:
+        type: int
+        lower: 0
+        upper: 100
+      COMPANY_ID:
+        type: int
+        lower: 0
+        upper: 100
+      COMPANY_NAME:
+        type: string
+      ROLE_E:
+        type: string 
+      ROLE_F:
+        type: string 
+      SUBMITTER_FLAG_E:
+        type: string 
+      SUBMITTER_FLAG_F: 
+        type: string
