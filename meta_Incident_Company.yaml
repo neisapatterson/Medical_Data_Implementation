@@ -1,0 +1,19 @@
+public:
+  table_name:
+    index:
+      type: int
+    INCIDENT_ID:
+      type: int
+    COMPANY_ID:
+      type: int
+    COMPANY_NAME:
+      type: string
+    ROLE_E:
+      type: string 
+    ROLE_F:
+      type: string 
+    SUBMITTER_FLAG_E:
+      type: string 
+    SUBMITTER_FLAG_F: 
+      type: string
+      
