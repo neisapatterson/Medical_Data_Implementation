@@ -1,6 +1,5 @@
-
 "":
-  PUMS:
+  IC:
     PUMS:
       row_privacy: True
       rows: 1000

@@ -18,5 +18,5 @@ pums = pd.read_csv(csv_path)
 print (pums.info())
 reader = snsql.from_df(pums, privacy = privacy, metadata=meta_path)
 
-result = reader.execute('SELECT INCIDENT_ID, AVG(COMPANY_ID) FROM PUMS.PUMS GROUP BY INCIDENT_ID')
+result = reader.execute('SELECT INCIDENT_ID, AVG(COMPANY_ID) FROM IC.PUMS GROUP BY INCIDENT_ID')
 print(result)
