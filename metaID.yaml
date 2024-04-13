@@ -1,0 +1,25 @@
+
+"":
+  ID:
+    PUMS:
+      row_privacy: True
+      rows: 1000
+      INCIDENT_ID: 
+        type: int
+        lower: 0
+        upper: 100
+      DEVICE_ID: 
+        type: int 
+        lower: 0
+        upper: 100
+      TRADE_NAME: 
+        type: string
+      PREF_NAME_CODE: 
+        type: string
+      RISK_CLASSIFICATION: 
+        type: string
+      USAGE_CODE_TERM_E: 
+        type: string
+      USAGE_CODE_TERM_F: 
+        type: string
+        

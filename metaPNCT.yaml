@@ -1,0 +1,11 @@
+"":
+  PNCT:
+    PUMS:
+      row_privacy: True
+      rows: 1000
+      PREF_NAME_CODE:
+        type: string 
+      PREF_DESC_E:
+        type: string 
+      PREF_DESC_F:
+        type: string

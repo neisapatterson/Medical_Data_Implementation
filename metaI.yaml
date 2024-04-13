@@ -1,0 +1,27 @@
+"":
+  I:
+    PUMS:
+      row_privacy: True
+      rows: 1000
+      INCIDENT_ID: 
+        type: int
+      INCIDENT_TYPE_E: 
+        type: string
+      INCIDENT_TYPE_F: 
+        type: string
+      RECEIPT_DT: 
+        type: date #Might need to be string as idk if date is right
+      SOURCE_OF_RECALL_E: 
+        type: string
+      SOURCE_OF_RECALL_F: 
+        type: string
+      HAZARD_SEVERITY_CODE_E: 
+        type: string
+      HAZARD_SEVERITY_CODE_F: 
+        type: string
+      INC_AWARE_DT: 
+        type: date
+      MANDATORY_RPT: 
+        type: int
+      INCIDENT_DT: 
+        type: date

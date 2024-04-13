@@ -1,0 +1,16 @@
+
+"":
+  PDCT:
+    PUMS:
+      row_privacy: True
+      rows: 1000
+      PATIENT_DEV_CD:
+        type: int
+      DESC_E:
+        type: string
+      DESC_F:
+        type: string
+      CODE_TYPE_E:
+        type: string 
+      CODE_TYPE_F:
+        type: string
