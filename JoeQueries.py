@@ -1,7 +1,9 @@
 import snsql
 from snsql import Privacy
 import pandas as pd
-privacy = Privacy (epsilon = 1.0, delta=(1/(514034*716)))
+from tabulate import tabulate
+# privacy = Privacy (epsilon = 1.0, delta=(1/(514034*716)))
+privacy = Privacy (epsilon = 100.0, delta=(1/(303032*550)))
 
 csv_path1 = 'NewCSV/INCIDENT_COMPANY.csv'
 csv_path2 = 'NewCSV/INCIDENT_DEVICE.csv'
@@ -19,43 +21,23 @@ meta_path5 = 'metaPDCT.yaml'
 meta_path6 = 'metaPNCT.yaml'
 metalist   = [meta_path1, meta_path2, meta_path3, meta_path4, meta_path5, meta_path6]
 
-# meta_path = 'allfiles.yaml'
-li = []
+meta_path = 'IJOINID.yaml'
 
-# for csv_path in csvlist:
-#     df = pd.read_csv(csv_path)
-#     print (df.info())
-#     li.append(df)
+ID = pd.read_csv(csv_path2)
+I  = pd.read_csv(csv_path4)
+PNCT = pd.read_csv(csv_path6)
 
-# for (csv_path, meta_path) in zip(csvlist, metalist):
-#     df = pd.read_csv(csv_path)
-#     li.append(df)
-#     # print(pums)
-#     print (df.info())
-
-# frame = pd.concat(li, axis=0, ignore_index=True)
-# reader = snsql.from_df(frame, privacy = privacy, metadata=meta_path)
-
-df = pd.read_csv(csv_path4)
+df = pd.merge(I[['INCIDENT_ID', 'HAZARD_SEVERITY_CODE_E', 'Sex']], ID[['INCIDENT_ID', 'PREF_NAME_CODE']], on='INCIDENT_ID', how='inner')
+df = pd.merge(df, PNCT[['PREF_NAME_CODE', 'PREF_DESC_E']], on='PREF_NAME_CODE', how='inner')
 print(df.info())
-reader = snsql.from_df(df, privacy = privacy, metadata=meta_path4)
 
-result = reader.execute(' SELECT I.PUMS.Sex, COUNT(*) AS Death_Count FROM I.PUMS WHERE I.PUMS.HAZARD_SEVERITY_CODE_E = \'DEATH\' GROUP BY I.PUMS.Sex')
-result = reader.execute(' SELECT COUNT(*) AS Death_Count FROM I.PUMS WHERE I.PUMS.HAZARD_SEVERITY_CODE_E = \'DEATH\'')
-    # SELECT  \
-    #     ID.DEVICE_ID,\
-    #     ID.TRADE_NAME, \
-    #     ID.RISK_CLASSIFICATION, \
-    #     I.Sex, \
-    #     COUNT(*) AS Death_Count \
-    # FROM \
-    #     I.PUMS as I\
-    # JOIN \
-    #     ID ON I.INCIDENT_ID = ID.PUMS.INCIDENT_ID \
-    # WHERE \
-    #     I.HAZARD_SEVERITY_CODE_E = \'DEATH\' \
-    # GROUP BY \
-    #     ID.DEVICE_ID, \
-    #     ID.TRADE_NAME, \
-    #     I.Sex;')
-print(result)
+reader = snsql.from_df(df, privacy = privacy, metadata=meta_path, table_name='TABLES')
+
+result = reader.execute('SELECT PREF_DESC_E, Sex, COUNT(INCIDENT_ID) AS Death_Count \
+                         FROM IJOINID.PUMS AS I WHERE I.HAZARD_SEVERITY_CODE_E = \'DEATH\' OR \
+                         I.HAZARD_SEVERITY_CODE_E = \'POTENTIAL FOR DEATH/INJURY \' \
+                        GROUP BY PREF_DESC_E, Sex ORDER BY Death_Count DESC LIMIT 5')
+
+print(tabulate(result, headers="firstrow"))
+
+

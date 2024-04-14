@@ -24,7 +24,7 @@
       INC_AWARE_DT: 
         type: string
       MANDATORY_RPT: 
-        type: int
+        type: string
       INCIDENT_DT: 
         type: string
       Sex:
