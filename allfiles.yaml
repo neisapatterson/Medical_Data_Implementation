@@ -1,0 +1,122 @@
+"":
+  ALLFILES:
+    I:
+      PUMS:
+        row_privacy: True
+        rows: 1000
+        IDX:
+          type: int
+        INCIDENT_ID: 
+          type: int
+        INCIDENT_TYPE_E: 
+          type: string
+        INCIDENT_TYPE_F: 
+          type: string
+        RECEIPT_DT: 
+          type: string
+        SOURCE_OF_RECALL_E: 
+          type: string
+        SOURCE_OF_RECALL_F: 
+          type: string
+        HAZARD_SEVERITY_CODE_E: 
+          type: string
+        HAZARD_SEVERITY_CODE_F: 
+          type: string
+        INC_AWARE_DT: 
+          type: string
+        MANDATORY_RPT: 
+          type: int
+        INCIDENT_DT: 
+          type: string
+        Sex:
+          type: string
+        Province:
+          type: string
+        Age:
+          type: string
+    ID:
+      PUMS:
+        row_privacy: True
+        rows: 1000
+        IDX:
+          type: int
+        INCIDENT_ID: 
+          type: int
+          lower: 0
+          upper: 100
+        DEVICE_ID: 
+          type: int 
+          lower: 0
+          upper: 100
+        TRADE_NAME: 
+          type: string
+        PREF_NAME_CODE: 
+          type: string
+        RISK_CLASSIFICATION: 
+          type: string
+        USAGE_CODE_TERM_E: 
+          type: string
+        USAGE_CODE_TERM_F: 
+          type: string
+    IPDC:
+      PUMS:
+        row_privacy: True
+        rows: 1000
+        IDX:
+          type: int
+        INCIDENT_ID: 
+          type: int 
+        PATIENT_DEV_CD: 
+          type: int
+    PDCT:
+      PUMS:
+        row_privacy: True
+        rows: 1000
+        IDX:
+          type: int
+        PATIENT_DEV_CD:
+          type: int
+        DESC_E:
+          type: string
+        DESC_F:
+          type: string
+        CODE_TYPE_E:
+          type: string 
+        CODE_TYPE_F:
+          type: string
+    PNCT:
+      PUMS:
+        row_privacy: True
+        rows: 1000
+        IDX:
+          type: int
+        PREF_NAME_CODE:
+          type: string 
+        PREF_DESC_E:
+          type: string 
+        PREF_DESC_F:
+          type: string
+    IC:
+      PUMS:
+        row_privacy: True
+        rows: 1000
+        IDX:
+          type: int
+        INCIDENT_ID:
+          type: int
+          lower: 0
+          upper: 100
+        COMPANY_ID:
+          type: int
+          lower: 0
+          upper: 100
+        COMPANY_NAME:
+          type: string
+        ROLE_E:
+          type: string 
+        ROLE_F:
+          type: string 
+        SUBMITTER_FLAG_E:
+          type: string 
+        SUBMITTER_FLAG_F: 
+          type: string
