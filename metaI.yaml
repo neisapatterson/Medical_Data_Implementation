@@ -3,6 +3,8 @@
     PUMS:
       row_privacy: True
       rows: 1000
+      IDX:
+        type: int
       INCIDENT_ID: 
         type: int
       INCIDENT_TYPE_E: 
@@ -25,3 +27,9 @@
         type: int
       INCIDENT_DT: 
         type: date
+      Sex:
+        type: string
+      Province:
+        type: string
+      Age:
+        type: string

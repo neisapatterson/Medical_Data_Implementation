@@ -3,6 +3,8 @@
     PUMS:
       row_privacy: True
       rows: 1000
+      IDX:
+        type: int
       INCIDENT_ID:
         type: int
         lower: 0

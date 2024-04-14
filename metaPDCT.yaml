@@ -4,6 +4,8 @@
     PUMS:
       row_privacy: True
       rows: 1000
+      IDX:
+        type: int
       PATIENT_DEV_CD:
         type: int
       DESC_E:
