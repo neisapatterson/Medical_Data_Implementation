@@ -76,29 +76,23 @@ print("ICD made")
 ############################################################################
 privacy_values = [0.1, 0.5, 1.0]  # Epsilon values to test
 
-# metaPaths = [mDPSD, mDPC]
-# queries   = [DPSD, DPC]
-
+#list of triplets with (query, dataframe, metafile)
+#add new queries to the list
 QueDfPath = [(ICD, dfICD, mICD), (DPSD, dfDPSD, mDPSD), (DPC, dfDPC, mDPC)]
 
 def run_query(epsilon):
     privacy = Privacy(epsilon=epsilon)  # Assuming Privacy is defined elsewhere
     times = []
     for (query, df, meta) in QueDfPath:  # Assuming QueDfPath is defined elsewhere
-        
         reader = snsql.from_df(df, privacy=privacy, metadata=meta)
         for i in range(10):
             start = time.time()
             reader.execute(query)
             end = time.time()
             times.append(end - start)
-        # execution_times.append(times)
         print(f"Execution times for query '{query}' with epsilon={epsilon}: {times}\n")
-
     return times
 # Run the query for each epsilon value and record execution times
-# execution_times = [run_query(epsilon) for epsilon in privacy_values]
-
 execution_times = []
 for epsilon in privacy_values:
     execution_times.append((epsilon, run_query(epsilon)))
@@ -106,6 +100,7 @@ for epsilon in privacy_values:
 # Plotting
 print(execution_times)
 for epsilon, times in execution_times:
+    #Once Ian's queries are added change 30 to 50
     plt.scatter([epsilon] * 30, times, label=f'Epsilon = {epsilon}', marker='o')
 
 plt.xlabel('Epsilon')
