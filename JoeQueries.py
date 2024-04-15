@@ -23,20 +23,42 @@ metalist   = [meta_path1, meta_path2, meta_path3, meta_path4, meta_path5, meta_p
 
 meta_path = 'IJOINID.yaml'
 
-ID = pd.read_csv(csv_path2)
-I  = pd.read_csv(csv_path4)
+ID   = pd.read_csv(csv_path2)
+I    = pd.read_csv(csv_path4)
 PNCT = pd.read_csv(csv_path6)
 
-df = pd.merge(I[['INCIDENT_ID', 'HAZARD_SEVERITY_CODE_E', 'Sex']], ID[['INCIDENT_ID', 'PREF_NAME_CODE']], on='INCIDENT_ID', how='inner')
+df = pd.merge(I[['INCIDENT_ID', 'HAZARD_SEVERITY_CODE_E', 'Sex']], ID[['INCIDENT_ID', 'TRADE_NAME', 'PREF_NAME_CODE']], on='INCIDENT_ID', how='inner')
 df = pd.merge(df, PNCT[['PREF_NAME_CODE', 'PREF_DESC_E']], on='PREF_NAME_CODE', how='inner')
 print(df.info())
 
-reader = snsql.from_df(df, privacy = privacy, metadata=meta_path, table_name='TABLES')
+reader = snsql.from_df(df, privacy = privacy, metadata=meta_path)
 
-result = reader.execute('SELECT PREF_DESC_E, Sex, COUNT(INCIDENT_ID) AS Death_Count \
-                         FROM IJOINID.PUMS AS I WHERE I.HAZARD_SEVERITY_CODE_E = \'DEATH\' OR \
-                         I.HAZARD_SEVERITY_CODE_E = \'POTENTIAL FOR DEATH/INJURY \' \
-                        GROUP BY PREF_DESC_E, Sex ORDER BY Death_Count DESC LIMIT 5')
+result = reader.execute('\
+        SELECT PREF_DESC_E, TRADE_NAME, Sex, COUNT(INCIDENT_ID) AS Death_Count \
+        FROM IJOINID.PUMS AS I WHERE I.HAZARD_SEVERITY_CODE_E = \'DEATH\' OR \
+            I.HAZARD_SEVERITY_CODE_E = \'POTENTIAL FOR DEATH/INJURY \' \
+        GROUP BY PREF_DESC_E, TRADE_NAME, Sex ORDER BY Death_Count DESC LIMIT 5')
+
+# result = reader.execute('\
+#         SELECT PREF_DESC_E, Sex, COUNT(INCIDENT_ID) AS Death_Count \
+#         FROM IJOINID.PUMS AS I WHERE I.HAZARD_SEVERITY_CODE_E = \'DEATH\' OR \
+#             I.HAZARD_SEVERITY_CODE_E = \'POTENTIAL FOR DEATH/INJURY \' \
+#         GROUP BY PREF_DESC_E, Sex ORDER BY Death_Count DESC LIMIT 5')
+
+print(tabulate(result, headers="firstrow"))
+
+
+
+IC  = pd.read_csv(csv_path1)
+df = pd.merge(I[['INCIDENT_ID', 'HAZARD_SEVERITY_CODE_E']], IC[['INCIDENT_ID', 'COMPANY_NAME']], on='INCIDENT_ID', how='inner')
+
+reader = snsql.from_df(df, privacy = privacy, metadata='IJOINIC.yaml')
+
+result = reader.execute('\
+        SELECT COMPANY_NAME, COUNT(INCIDENT_ID) AS Death_Count \
+        FROM IJOINIC.PUMS AS I WHERE I.HAZARD_SEVERITY_CODE_E = \'DEATH\' OR \
+            I.HAZARD_SEVERITY_CODE_E = \'POTENTIAL FOR DEATH/INJURY \' \
+        GROUP BY COMPANY_NAME ORDER BY Death_Count DESC LIMIT 5')
 
 print(tabulate(result, headers="firstrow"))
 

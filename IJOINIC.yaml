@@ -1,5 +1,5 @@
 "":
-  IJOINID:
+  IJOINIC:
     PUMS:
       row_privacy: True
       rows: 1000
@@ -7,11 +7,5 @@
         type: int
       HAZARD_SEVERITY_CODE_E: 
         type: string
-      Sex:
-        type: string
-      TRADE_NAME:
-        type: string
-      PREF_NAME_CODE: 
-        type: string
-      PREF_DESC_E:
+      COMPANY_NAME:
         type: string
