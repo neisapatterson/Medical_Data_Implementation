@@ -3,7 +3,7 @@ from snsql import Privacy
 import pandas as pd
 from tabulate import tabulate
 # privacy = Privacy (epsilon = 1.0, delta=(1/(514034*716)))
-privacy = Privacy (epsilon = 100.0, delta=(1/(303032*550)))
+privacy = Privacy (epsilon = 1.0, delta=(1/(303032*550)))
 
 csv_path1 = 'NewCSV/INCIDENT_COMPANY.csv'
 csv_path2 = 'NewCSV/INCIDENT_DEVICE.csv'
@@ -29,7 +29,7 @@ PNCT = pd.read_csv(csv_path6)
 
 df = pd.merge(I[['INCIDENT_ID', 'HAZARD_SEVERITY_CODE_E', 'Sex']], ID[['INCIDENT_ID', 'TRADE_NAME', 'PREF_NAME_CODE']], on='INCIDENT_ID', how='inner')
 df = pd.merge(df, PNCT[['PREF_NAME_CODE', 'PREF_DESC_E']], on='PREF_NAME_CODE', how='inner')
-print(df.info())
+# print(df.info())
 
 reader = snsql.from_df(df, privacy = privacy, metadata=meta_path)
 
@@ -37,7 +37,7 @@ result = reader.execute('\
         SELECT PREF_DESC_E, TRADE_NAME, Sex, COUNT(INCIDENT_ID) AS Death_Count \
         FROM IJOINID.PUMS AS I WHERE I.HAZARD_SEVERITY_CODE_E = \'DEATH\' OR \
             I.HAZARD_SEVERITY_CODE_E = \'POTENTIAL FOR DEATH/INJURY \' \
-        GROUP BY PREF_DESC_E, TRADE_NAME, Sex ORDER BY Death_Count DESC LIMIT 5')
+        GROUP BY PREF_DESC_E, TRADE_NAME, Sex ORDER BY Death_Count DESC LIMIT 8')
 
 # result = reader.execute('\
 #         SELECT PREF_DESC_E, Sex, COUNT(INCIDENT_ID) AS Death_Count \
@@ -46,6 +46,8 @@ result = reader.execute('\
 #         GROUP BY PREF_DESC_E, Sex ORDER BY Death_Count DESC LIMIT 5')
 
 print(tabulate(result, headers="firstrow"))
+print(reader.odometer.spent)
+print("\n\n\n")
 
 
 
@@ -61,5 +63,6 @@ result = reader.execute('\
         GROUP BY COMPANY_NAME ORDER BY Death_Count DESC LIMIT 5')
 
 print(tabulate(result, headers="firstrow"))
+print(reader.odometer.spent)
 
 
