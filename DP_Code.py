@@ -25,6 +25,46 @@ mID = 'metaID.yaml'
 
 # meta_path = 'IJOINID.yaml'
 
+############################################################################
+#Query for finding the non-fatal incidents by device
+ID   = pd.read_csv(csv_path2)
+I    = pd.read_csv(csv_path4)
+PNCT = pd.read_csv(csv_path6)
+
+NFIPD = 'SELECT PREF_DESC_E, TRADE_NAME, COUNT(INCIDENT_ID) AS \
+        NonFatal_Incident_Count FROM IJOINID.PUMS AS I WHERE \
+        I.HAZARD_SEVERITY_CODE_E != \'DEATH\' GROUP BY PREF_DESC_E, TRADE_NAME \
+        ORDER BY NonFatal_Incident_Count DESC LIMIT 5'
+
+mNFIPD = 'IJOINID.yaml'
+
+Ie    = I[['INCIDENT_ID', 'HAZARD_SEVERITY_CODE_E']]
+IDe   = ID[['INCIDENT_ID', 'TRADE_NAME', 'PREF_NAME_CODE']]
+PNCTe = PNCT[['PREF_NAME_CODE', 'PREF_DESC_E']]
+
+df = pd.merge(Ie, IDe, on='INCIDENT_ID', how='left')
+dfNFIPD = pd.merge(df, PNCTe, on='PREF_NAME_CODE', how='left')
+print("NFIPD made")
+
+############################################################################
+#Query for finding the death count per province by device
+ID   = pd.read_csv(csv_path2)
+I    = pd.read_csv(csv_path4)
+PNCT = pd.read_csv(csv_path6)
+
+DPDD = 'SELECT PREF_DESC_E, TRADE_NAME, Province, COUNT(INCIDENT_ID) AS Death_Count FROM \
+        IJOINID.PUMS AS I WHERE I.HAZARD_SEVERITY_CODE_E = \'DEATH\' GROUP BY \
+        PREF_DESC_E, TRADE_NAME, Province ORDER BY Death_Count DESC LIMIT 5'
+
+mDPDD = 'IJOINID.yaml'
+
+Ie    = I[['INCIDENT_ID', 'HAZARD_SEVERITY_CODE_E', 'Province']]
+IDe   = ID[['INCIDENT_ID', 'TRADE_NAME', 'PREF_NAME_CODE']]
+PNCTe = PNCT[['PREF_NAME_CODE', 'PREF_DESC_E']]
+
+df = pd.merge(Ie, IDe, on='INCIDENT_ID', how='inner')
+dfDPPD = pd.merge(df, PNCTe, on='PREF_NAME_CODE', how='inner')
+print("DPPD made")
 
 ############################################################################
 #Query for finding the death count per sex and per device
@@ -78,7 +118,7 @@ privacy_values = [0.1, 0.5, 1.0]  # Epsilon values to test
 
 #list of triplets with (query, dataframe, metafile)
 #add new queries to the list
-QueDfPath = [(ICD, dfICD, mICD), (DPSD, dfDPSD, mDPSD), (DPC, dfDPC, mDPC)]
+QueDfPath = [(NIPD, dfNFIPD, mNFIPD), (ICD, dfICD, mICD), (DPDD, dfDPDD, mDPDD), (DPSD, dfDPSD, mDPSD), (DPC, dfDPC, mDPC)]
 
 def run_query(epsilon):
     privacy = Privacy(epsilon=epsilon)  # Assuming Privacy is defined elsewhere
@@ -100,8 +140,7 @@ for epsilon in privacy_values:
 # Plotting
 print(execution_times)
 for epsilon, times in execution_times:
-    #Once Ian's queries are added change 30 to 50
-    plt.scatter([epsilon] * 30, times, label=f'Epsilon = {epsilon}', marker='o')
+    plt.scatter([epsilon] * 50, times, label=f'Epsilon = {epsilon}', marker='o')
 
 plt.xlabel('Epsilon')
 plt.ylabel('Execution Time (s)')
