@@ -2,8 +2,7 @@ import snsql
 from snsql import Privacy
 import pandas as pd
 from tabulate import tabulate
-# privacy = Privacy (epsilon = 1.0, delta=(1/(514034*716)))
-privacy = Privacy (epsilon = 1.0, delta=(1/(303032*550)))
+privacy = Privacy (epsilon = 1.0)
 
 csv_path1 = 'NewCSV/INCIDENT_COMPANY.csv'
 csv_path2 = 'NewCSV/INCIDENT_DEVICE.csv'

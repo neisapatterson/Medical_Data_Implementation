@@ -1,6 +1,7 @@
 "":
   IJOINID:
     PUMS:
+      censor_dims: False
       row_privacy: True
       rows: 1000
       INCIDENT_ID: 

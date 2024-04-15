@@ -1,0 +1,9 @@
+"":
+  ID:
+    PUMS:
+      row_privacy: True
+      rows: 1000
+      INCIDENT_ID: 
+        type: int
+      DEVICE_ID:
+        type: string
