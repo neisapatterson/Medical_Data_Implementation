@@ -35,7 +35,8 @@ pums = pd.read_csv(csv_path2)
 
 privacy_values = [0.1, 0.5, 1.0]  # Epsilon values to test
 
-def run_query(epsilon):
+# # time graph
+def run_time(epsilon):
     privacy = Privacy(epsilon=epsilon)
     reader = snsql.from_df(pums, privacy=privacy, metadata=meta_path)
     times = []
@@ -47,7 +48,7 @@ def run_query(epsilon):
     return times  # Return execution times for 10 runs
 
 # Run the query for each epsilon value and record execution times
-execution_times = {epsilon: run_query(epsilon) for epsilon in privacy_values}
+execution_times = {epsilon: run_time(epsilon) for epsilon in privacy_values}
 
 # Plotting
 for epsilon, times in execution_times.items():
@@ -59,3 +60,32 @@ plt.title('Execution Time vs. Epsilon')
 plt.legend()
 plt.grid(True)
 plt.show()
+
+# accuracy graph
+def run_accuracy(epsilon):
+    privacy = Privacy(epsilon=epsilon)
+    reader = snsql.from_df(pums, privacy=privacy, metadata=meta_path)
+    query_results = [[] for _ in range(10)]
+    for i in range(10):
+        results = reader.execute('SELECT COUNT(INCIDENT_ID) AS NUM_INCIDENTS FROM ID.PUMS GROUP BY DEVICE_ID ORDER BY NUM_INCIDENTS DESC LIMIT 5')
+        
+        results = results[1:len(results)]
+        query_results[i].append([inner_list[0] for inner_list in results])
+
+    return query_results
+
+
+error = {epsilon: run_accuracy(epsilon) for epsilon in privacy_values}
+actual = ps.sqldf('SELECT DEVICE_ID, COUNT(INCIDENT_ID) AS NUM_INCIDENTS FROM pums GROUP BY DEVICE_ID ORDER BY NUM_INCIDENTS DESC LIMIT 5', globals())
+actual_list = actual['NUM_INCIDENTS'].tolist()
+print(actual_list)
+
+absolute_errors = [[] for _ in range(10)]
+for epsilon, results in error.items():
+    for result in results:
+        for i in range(len(result[0])):
+            absolute_errors[i].append(result[0][i] - actual_list[i])
+        
+
+print(absolute_errors)
+
