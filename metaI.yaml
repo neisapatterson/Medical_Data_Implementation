@@ -3,6 +3,8 @@
     PUMS:
       row_privacy: True
       rows: 1000
+      IDX:
+        type: int
       INCIDENT_ID: 
         type: int
       INCIDENT_TYPE_E: 
@@ -10,7 +12,7 @@
       INCIDENT_TYPE_F: 
         type: string
       RECEIPT_DT: 
-        type: date #Might need to be string as idk if date is right
+        type: string
       SOURCE_OF_RECALL_E: 
         type: string
       SOURCE_OF_RECALL_F: 
@@ -20,8 +22,14 @@
       HAZARD_SEVERITY_CODE_F: 
         type: string
       INC_AWARE_DT: 
-        type: date
+        type: string
       MANDATORY_RPT: 
-        type: int
+        type: string
       INCIDENT_DT: 
-        type: date
+        type: string
+      Sex:
+        type: string
+      Province:
+        type: string
+      Age:
+        type: string

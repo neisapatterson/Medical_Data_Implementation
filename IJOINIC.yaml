@@ -1,0 +1,11 @@
+"":
+  IJOINIC:
+    PUMS:
+      row_privacy: True
+      rows: 1000
+      INCIDENT_ID: 
+        type: int
+      HAZARD_SEVERITY_CODE_E: 
+        type: string
+      COMPANY_NAME:
+        type: string

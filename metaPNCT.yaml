@@ -3,6 +3,8 @@
     PUMS:
       row_privacy: True
       rows: 1000
+      IDX:
+        type: int
       PREF_NAME_CODE:
         type: string 
       PREF_DESC_E:

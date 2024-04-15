@@ -3,6 +3,8 @@
     PUMS:
       max_ids: 1
       rows: 1000
+      IDX:
+        type: int
       age:
         type: int
         lower: 0
