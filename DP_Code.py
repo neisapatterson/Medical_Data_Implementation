@@ -63,7 +63,7 @@ IDe   = ID[['INCIDENT_ID', 'TRADE_NAME', 'PREF_NAME_CODE']]
 PNCTe = PNCT[['PREF_NAME_CODE', 'PREF_DESC_E']]
 
 df = pd.merge(Ie, IDe, on='INCIDENT_ID', how='inner')
-dfDPPD = pd.merge(df, PNCTe, on='PREF_NAME_CODE', how='inner')
+dfDPDD = pd.merge(df, PNCTe, on='PREF_NAME_CODE', how='inner')
 print("DPPD made")
 
 ############################################################################
@@ -118,33 +118,65 @@ privacy_values = [0.1, 0.5, 1.0]  # Epsilon values to test
 
 #list of triplets with (query, dataframe, metafile)
 #add new queries to the list
-QueDfPath = [(NIPD, dfNFIPD, mNFIPD), (ICD, dfICD, mICD), (DPDD, dfDPDD, mDPDD), (DPSD, dfDPSD, mDPSD), (DPC, dfDPC, mDPC)]
+QueDfPath = [(NFIPD, dfNFIPD, mNFIPD), (ICD, dfICD, mICD), (DPDD, dfDPDD, mDPDD), (DPSD, dfDPSD, mDPSD), (DPC, dfDPC, mDPC)]
+# Ques      = [NFIPD, ICD, DPDD, DPSD, DPC]
+# readers   = [snsql.from_df(dfNFIPD, privacy=privacy, metadata=mNFIPD), snsql.from_df(dfICD, privacy=privacy, metadata=mICD), snsql.from_df(dfDPDD, privacy=privacy, metadata=mDPDD), snsql.from_df(dfDPSD, privacy=privacy, metadata=mDPSD), snsql.from_df(dfDPC, privacy=privacy, metadata=mDPC)]
 
-def run_query(epsilon):
-    privacy = Privacy(epsilon=epsilon)  # Assuming Privacy is defined elsewhere
-    times = []
-    for (query, df, meta) in QueDfPath:  # Assuming QueDfPath is defined elsewhere
-        reader = snsql.from_df(df, privacy=privacy, metadata=meta)
-        for i in range(10):
-            start = time.time()
-            reader.execute(query)
-            end = time.time()
-            times.append(end - start)
-        print(f"Execution times for query '{query}' with epsilon={epsilon}: {times}\n")
-    return times
-# Run the query for each epsilon value and record execution times
-execution_times = []
-for epsilon in privacy_values:
-    execution_times.append((epsilon, run_query(epsilon)))
+# for i in range(4):  # Assuming QueDfPath is defined elsewhere
+#         readers[i].execute(Ques[i])
+#         print("\n")
+#         print(Ques[i])
+#         print(tabulate([f"{value:.1f}" for value in readers[i].odometer.spent]))
 
-# Plotting
-print(execution_times)
-for epsilon, times in execution_times:
-    plt.scatter([epsilon] * 50, times, label=f'Epsilon = {epsilon}', marker='o')
 
-plt.xlabel('Epsilon')
-plt.ylabel('Execution Time (s)')
-plt.title('Execution Time vs. Epsilon')
-plt.legend()
-plt.grid(True)
-plt.show()
+for (query, df, meta) in QueDfPath:  # Assuming QueDfPath is defined elsewhere
+    reader = snsql.from_df(df, privacy=privacy, metadata=meta)
+    print(tabulate(reader.execute(query), headers="firstrow"))
+
+
+
+
+# for i in range(4):  # Assuming QueDfPath is defined elsewhere
+#         readers[i].odometer = readers[i+1].odometer
+
+# header = ["Privacy Cost"]
+
+# for i in range(4):  # Assuming QueDfPath is defined elsewhere
+#         readers[i].execute(Ques[i])
+#         print("\n")
+#         print(Ques[i])
+#         print(tabulate([f"{value:.1f}" for value in readers[i].odometer.spent]))
+        
+# readers[4].execute(Ques[4])
+# print("\n")
+# print(Ques[4])
+# print(tabulate([f"{value:.1f}" for value in readers[4].odometer.spent]))
+
+# def run_query(epsilon):
+#     privacy = Privacy(epsilon=epsilon)  # Assuming Privacy is defined elsewhere
+#     times = []
+#     for (query, df, meta) in QueDfPath:  # Assuming QueDfPath is defined elsewhere
+#         reader = snsql.from_df(df, privacy=privacy, metadata=meta)
+#         for i in range(10):
+#             start = time.time()
+#             reader.execute(query)
+#             end = time.time()
+#             times.append(end - start)
+#         print(f"Execution times for query '{query}' with epsilon={epsilon}: {times}\n")
+#     return times
+# # Run the query for each epsilon value and record execution times
+# execution_times = []
+# for epsilon in privacy_values:
+#     execution_times.append((epsilon, run_query(epsilon)))
+
+# # Plotting
+# print(execution_times)
+# for epsilon, times in execution_times:
+#     plt.scatter([epsilon] * 50, times, label=f'Epsilon = {epsilon}', marker='o')
+
+# plt.xlabel('Epsilon')
+# plt.ylabel('Execution Time (s)')
+# plt.title('Execution Time vs. Epsilon')
+# plt.legend()
+# plt.grid(True)
+# plt.show()

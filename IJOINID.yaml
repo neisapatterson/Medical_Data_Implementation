@@ -16,3 +16,5 @@
         type: string
       PREF_DESC_E:
         type: string
+      Province:
+        type: string
